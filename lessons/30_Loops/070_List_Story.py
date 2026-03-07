@@ -8,9 +8,9 @@ append them to the story
 words = ['Once', '👦', 'upon', '🐕', 'park', 'met', 'with', 'a', 'the', 
     'time', 'to', 'who', '🐈', '👧', 'and', 'went', 'had', 'play', '⚽.', 'they']
 
-story = []
+story = [words[0:2:1]]
 
 # Create a story using the words in the list
 
 # Display the story to the user
-print(' '.join(story))
+print(story)

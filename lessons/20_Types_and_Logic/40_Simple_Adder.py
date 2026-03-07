@@ -20,3 +20,21 @@ at the comments and the code snippets in the previous lessons, like
 # Display the sum of the two numbers 
 
 # Keep the window open
+
+
+from tkinter import messagebox, simpledialog, Tk # import required modules
+
+window = Tk()     # Create a window object
+window.withdraw() # Hide the window; we just want to see pop ups
+
+# Ask the user for the first number
+num1 = simpledialog.askinteger("First Number", "Enter the first number:")
+
+# Ask the user for the second number
+num2 = simpledialog.askinteger("Second Number", "Enter the second number:")
+
+# Display the sum of the two numbers
+messagebox.showinfo("Sum", f"The sum of {num1} and {num2} is {num1 + num2}")
+
+# Keep the window open
+window.mainloop()

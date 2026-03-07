@@ -37,3 +37,32 @@ you can ask for a string with simpledialog.askstring().
 # If the user enters an unknown operation, display an error message. ( use messagebox.showerror()
 
 # Keep the window open
+
+from tkinter import messagebox, simpledialog, Tk # import required modules
+
+window = Tk()     # Create a window object
+window.withdraw() # Hide the window; we just want to see pop ups
+
+# Ask the user for the first number
+num1 = simpledialog.askinteger("First Number", "Enter the first number:")
+
+# Ask the user for the second number
+num2 = simpledialog.askinteger("Second Number", "Enter the second number:")
+
+operation = simpledialog.askstring("Operation", "Enter the operation (add, subtract, multiply, divide):")
+
+# Display the sum of the two numbers
+if operation == "add":
+   messagebox.showinfo("Sum", f"The sum of {num1} and {num2} is {num1 + num2}")
+
+elif operation == "subtract":
+   messagebox.showinfo("Sum", f"The sum of {num1} and {num2} is {num1 - num2}")
+
+elif operation == "multiply":
+   messagebox.showinfo("Sum", f"The sum of {num1} and {num2} is {num1 * num2}")
+
+elif operation == "divide":
+   messagebox.showinfo("Sum", f"The sum of {num1} and {num2} is {num1 / num2}")
+
+# Keep the window open
+window.mainloop()
