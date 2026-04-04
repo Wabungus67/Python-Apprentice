@@ -1,7 +1,7 @@
 from guizero import App, Box, Text, TextBox, PushButton, ListBox, error
 
 """
-Funny Words Dictionary
+Funny Words Dictionary 
 
 This program provides a graphical user interface (GUI) for managing a dictionary
 of funny words and their definitions. Users can add new definitions, delete
@@ -23,6 +23,13 @@ an error message will be displayed and new definitions will not be added.
 # Implement the functions below
 
 def add_definition(db, key, value):
+
+    if len(db) != 5:
+        db[key] = value
+        print(db)
+    else:
+        print("Too many!")
+
     """
     Add a new definition to the database.
 
@@ -62,6 +69,7 @@ def delete_definition(db, key):
 
 
 def is_funny(definition):
+        
     """
     Check if the definition is funny, which means it contains one of the words:
 
