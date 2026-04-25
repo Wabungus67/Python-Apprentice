@@ -25,19 +25,15 @@ def check_row(l):
 
 def check_win(board):
 
-    if check_row(board[0]):
-        return check_row(board[0])
-    if check_row(board[1]):
-        return check_row(board[1])
-    if check_row(board[2]):
-        return check_row(board[2])
-    
-    if check_row([board[0][0], board[1][0], board[2][0]]):
-        return check_row([board[0][0], board[1][0], board[2][0]])
-    if check_row([board[0][1], board[1][1], board[2][1]]):
-        return check_row([board[0][1], board[1][1], board[2][1]])
-    if check_row([board[0][2], board[1][2], board[2][2]]):
-        return check_row([board[0][2], board[1][2], board[2][2]])
+    for i in range(3):
+        if check_row(board[i]):
+            return check_row(board[i])
+        
+    transposed = list(zip(*board))
+
+    for i in range(3):
+        if check_row(transposed[i]):
+            return check_row(transposed[i])
     
     if check_row([board[0][0], board[1][1], board[2][2]]):
         return check_row([board[0][0], board[1][1], board[2][2]])

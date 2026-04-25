@@ -24,6 +24,19 @@ walker.pendown()
 
 # Function to move the turtle randomly in the grid
 def random_walk(walker, steps):
+
+    angle = random.randint(0, 360)
+
+    turndirection = random.choice(["Left", "Right"])
+
+    if turndirection == "Left":
+        walker.left(angle)
+
+    else:
+        walker.right(angle)
+
+    walker.forward(steps)
+
     """ Implement a random walk for the turtle
 
     The turtle will move on a grid, taking a random step in one of the four directions
@@ -64,7 +77,13 @@ def random_walk(walker, steps):
 
 
 # Start the random walk
-random_walk(walker, 200)
+
+for _ in range(50):
+    for _ in range(200):
+        random_walk(walker, 20)
+    
+    walker.penup()
+    walker.goto(0, 0)
+    walker.pendown()
 
 # Close the turtle window on click
-screen.exitonclick()
