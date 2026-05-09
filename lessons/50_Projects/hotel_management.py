@@ -15,7 +15,6 @@ def delete_room(db, key):
         del db[key]
         print(db)
 
-    
 
 def update_listbox(db):
     
@@ -31,13 +30,14 @@ def update_listbox(db):
 
 cash_amount = 0
 
-def room_level(definition):
-    
-    if any(word in definition for word in ['fun', 'funny', 'hilarious', 'amusing', 'pants', 'spleen']):
-        return True
-    else:
-        return False
 
+def rob_room():
+    selected_item = listbox.value
+    if selected_item:
+        name = selected_item.split(":", 1)[0].strip()
+        if name in db:
+            db[name] += "😂"
+            _update_listbox(db)
 
 
 def _add_room():
@@ -46,10 +46,13 @@ def _add_room():
     
 
     if name and room:
-        add_room(db, name, room)
-        _update_listbox(db)
-        name_entry.clear()
-        room_entry.clear()
+        if room.isdigit():
+            add_room(db, name, room)
+            _update_listbox(db)
+            name_entry.clear()
+            room_entry.clear()
+        else:
+            error("Input Error", "Please Input a Number")
     else:
         error("Input Error", "Both fields must be filled out.")
 
@@ -72,19 +75,17 @@ def _delete_room():
             _update_listbox(db)
 
 # Main app
-app = App(title="Hotel Management", width=600, height=400)
+app = App(title="Hotel Management", width=350, height=400)
 
 # Top pane for input
 top_pane = Box(app, align="top", width="fill", border=True)
 
 Text(top_pane, text="Name:", align="left")
-name_entry = TextBox(top_pane, width="20", align="left")
+name_entry = TextBox(top_pane, width="12", align="left")
 Text(top_pane, text="Days:", width="6" , align="left")
 room_entry = TextBox(top_pane, width="5", align="left")
-Text(top_pane, text="Room Level?", width="12" , align="left")
-level_entry = TextBox(top_pane, width="5", align="left")
 
-PushButton(top_pane, text="Add", width="10", align="bottom", command=_add_room)
+PushButton(top_pane, text="Add", width="6", align="bottom", command=_add_room)
 
 
 
@@ -92,7 +93,8 @@ PushButton(top_pane, text="Add", width="10", align="bottom", command=_add_room)
 bottom_pane = Box(app, align="bottom", width="fill", height="fill", border=True)
 listbox = ListBox(bottom_pane, items=[], width="fill", height="fill")
 Text(bottom_pane, text="Cash Money: $", width="15" , align="left")
-PushButton(bottom_pane, text="Check Out", command=_delete_room)
+PushButton(bottom_pane, text="Check Out", align="left", command=_delete_room)
+PushButton(bottom_pane, text="Rob", align="left", command=rob_room)
 
 
 
