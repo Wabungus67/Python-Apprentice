@@ -1,19 +1,25 @@
 from guizero import App, Box, Text, TextBox, PushButton, ListBox, error
 
-def add_room(db, key, value):
+cash_amount = 0
 
+def add_room(db, key, value):
+    global cash_amount
     if len(db) != 5:
         db[key] = value
+        print(int(value))
+        cash_amount += (int(value) * 100)
+        print(cash_amount)
         print(db)
     else:
-        print("Too Many!")
+        error("Sorry" , "All Rooms are Full!")
 
 
 def delete_room(db, key):
-    
+    print(db)
     if key in db:
         del db[key]
         print(db)
+
 
 
 def update_listbox(db):
@@ -28,15 +34,14 @@ def update_listbox(db):
         return l
 
 
-cash_amount = 0
-
-
 def rob_room():
+    global cash_amount
     selected_item = listbox.value
     if selected_item:
         name = selected_item.split(":", 1)[0].strip()
         if name in db:
             db[name] += "😂"
+            cash_amount += 100
             _update_listbox(db)
 
 
@@ -47,12 +52,16 @@ def _add_room():
 
     if name and room:
         if room.isdigit():
-            add_room(db, name, room)
-            _update_listbox(db)
-            name_entry.clear()
-            room_entry.clear()
+            days = int(room)
+            if days > 0:
+                add_room(db, name, room)
+                _update_listbox(db)
+                name_entry.clear()
+                room_entry.clear()
+            else:
+                error("Input Error", "Please Input a Valid Number")
         else:
-            error("Input Error", "Please Input a Number")
+            error("Input Error", "Please Input a Valid Number")
     else:
         error("Input Error", "Both fields must be filled out.")
 
@@ -65,9 +74,18 @@ def _update_listbox(db):
     for i in update_listbox(db):
         listbox.append(i)
 
+def _update_cashamount():
+    global cash_amount
+    # Display the current value of the variable
+    MoneyUi.value = f"Money: ${cash_amount}"
+    # Schedule the next update in 1000ms (1 second)
+    MoneyUi.after(1000, _update_cashamount)
+
+
 # Function to delete a room
 def _delete_room():
-    selected_item = listbox.value
+    global cash_amount
+    selected_item = listbox.value 
     if selected_item:
         name = selected_item.split(":", 1)[0].strip()
         if name in db:
@@ -92,11 +110,11 @@ PushButton(top_pane, text="Add", width="6", align="bottom", command=_add_room)
 # Bottom pane for displaying rooms
 bottom_pane = Box(app, align="bottom", width="fill", height="fill", border=True)
 listbox = ListBox(bottom_pane, items=[], width="fill", height="fill")
-Text(bottom_pane, text="Cash Money: $", width="15" , align="left")
+MoneyUi = Text(bottom_pane, text=cash_amount, width="15" , align="left")
 PushButton(bottom_pane, text="Check Out", align="left", command=_delete_room)
 PushButton(bottom_pane, text="Rob", align="left", command=rob_room)
 
-
+MoneyUi.after(1000, _update_cashamount)
 
 # Function to handle enter key press
 def handle_enter(event):
