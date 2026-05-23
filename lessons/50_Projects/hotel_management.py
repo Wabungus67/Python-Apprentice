@@ -2,11 +2,10 @@ from guizero import App, Box, Text, TextBox, PushButton, ListBox, error
 
 cash_amount = 0
 
-def add_room(db, key, value):
+def add_room(db, key, value, number):
     global cash_amount
     if len(db) != 5:
-        db[key] = value
-        print(int(value))
+        db[key] = (number, value)
         cash_amount += (int(value) * 100)
         print(cash_amount)
         print(db)
@@ -40,7 +39,7 @@ def rob_room():
     if selected_item:
         name = selected_item.split(":", 1)[0].strip()
         if name in db:
-            db[name] += "😂"
+            db[name] += ("😂",)
             cash_amount += 100
             _update_listbox(db)
 
@@ -48,25 +47,32 @@ def rob_room():
 def _add_room():
     name = name_entry.value.strip()
     room = room_entry.value.strip()
+    num = num_entry.value.strip()
     
 
     if name and room:
-        if room.isdigit():
-            days = int(room)
-            if days > 0:
-                add_room(db, name, room)
-                _update_listbox(db)
-                name_entry.clear()
-                room_entry.clear()
+        if num in NumRooms:
+            if room.isdigit():
+                days = int(room)
+                if days > 0:
+                    add_room(db, name, room, num)
+                    NumRooms.remove(num)
+                    _update_listbox(db)
+                    name_entry.clear()
+                    room_entry.clear()
+                else:
+                    error("Input Error", "Please Input a Valid Number")
             else:
                 error("Input Error", "Please Input a Valid Number")
         else:
-            error("Input Error", "Please Input a Valid Number")
+            error("Enter a Proper Room Number", (NumRooms))
     else:
         error("Input Error", "Both fields must be filled out.")
 
 # Global dictionary to store rooms
 db = {}
+
+NumRooms = ["401", "402", "403", "404", "405"]
 
 # Function to update the listbox with current rooms
 def _update_listbox(db):
@@ -85,15 +91,19 @@ def _update_cashamount():
 # Function to delete a room
 def _delete_room():
     global cash_amount
-    selected_item = listbox.value 
+    selected_item = listbox.value
     if selected_item:
         name = selected_item.split(":", 1)[0].strip()
+        room_owner = db[name]
+        room_num = room_owner[0]
+        NumRooms.append(room_num)
         if name in db:
             del db[name]
-            _update_listbox(db)
+            print(selected_item)
+    _update_listbox(db)
 
 # Main app
-app = App(title="Hotel Management", width=350, height=400)
+app = App(title="Hotel Management", width=500, height=400)
 
 # Top pane for input
 top_pane = Box(app, align="top", width="fill", border=True)
@@ -102,6 +112,8 @@ Text(top_pane, text="Name:", align="left")
 name_entry = TextBox(top_pane, width="12", align="left")
 Text(top_pane, text="Days:", width="6" , align="left")
 room_entry = TextBox(top_pane, width="5", align="left")
+Text(top_pane, text="Room #:", width="8" , align="left")
+num_entry = TextBox(top_pane, width="6", align="left")
 
 PushButton(top_pane, text="Add", width="6", align="bottom", command=_add_room)
 
